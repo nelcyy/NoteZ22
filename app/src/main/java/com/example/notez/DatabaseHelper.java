@@ -6,88 +6,70 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import androidx.annotation.Nullable;
-
 public class DatabaseHelper extends SQLiteOpenHelper {
-
-    // Database name
-    private static final String DATABASE_NAME = "SignUp.db";
-    // Database version
+    private static final String DATABASE_NAME = "notez.db";
     private static final int DATABASE_VERSION = 1;
+    private static final String TABLE_USERS = "users";
 
-    public DatabaseHelper(@Nullable Context context) {
+    // User table columns
+    private static final String COLUMN_ID = "id";
+    private static final String COLUMN_USERNAME = "username";
+    private static final String COLUMN_NICKNAME = "nickname";
+    private static final String COLUMN_PASSWORD = "password";
+
+    public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
-    public void onCreate(SQLiteDatabase MyDatabase) {
-        // Create the user table
-        MyDatabase.execSQL("CREATE TABLE allusers(username TEXT PRIMARY KEY, password TEXT)");
-        // Create the notes table
-        MyDatabase.execSQL("CREATE TABLE notes(username TEXT, title TEXT, subtitle TEXT, content TEXT)");
+    public void onCreate(SQLiteDatabase db) {
+        String CREATE_USERS_TABLE = "CREATE TABLE " + TABLE_USERS + " (" +
+                COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_USERNAME + " TEXT UNIQUE, " +
+                COLUMN_NICKNAME + " TEXT, " +
+                COLUMN_PASSWORD + " TEXT)";
+        db.execSQL(CREATE_USERS_TABLE);
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase MyDatabase, int oldVersion, int newVersion) {
-        // Drop the tables if they exist
-        MyDatabase.execSQL("DROP TABLE IF EXISTS allusers");
-        MyDatabase.execSQL("DROP TABLE IF EXISTS notes");
-        onCreate(MyDatabase); // Recreate tables
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
+        onCreate(db);
     }
 
-    // Method to insert new user data
-    public Boolean insertData(String username, String password) {
-        SQLiteDatabase MyDatabase = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("username", username);
-        contentValues.put("password", password);
-        long result = MyDatabase.insert("allusers", null, contentValues);
+    // Method to add a new user
+    public boolean addUser(String username, String nickname, String password) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_USERNAME, username);
+        values.put(COLUMN_NICKNAME, nickname);
+        values.put(COLUMN_PASSWORD, password);
 
-        return result != -1; // Return true if insert was successful
+        long result = db.insert(TABLE_USERS, null, values);
+        db.close(); // Close database connection
+        return result != -1; // Return true if user is added successfully
     }
 
     // Method to check if a username already exists
-    public Boolean checkUsername(String username) {
-        SQLiteDatabase MyDatabase = this.getWritableDatabase();
-        Cursor cursor = MyDatabase.rawQuery("SELECT * FROM allusers WHERE username = ?", new String[]{username});
-        return cursor.getCount() > 0; // Return true if username exists
+    public boolean isUsernameExists(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_USERS, new String[]{COLUMN_USERNAME},
+                COLUMN_USERNAME + "=?", new String[]{username}, null, null, null);
+        boolean exists = (cursor.getCount() > 0); // Check if username exists
+        cursor.close(); // Close cursor
+        db.close(); // Close database connection
+        return exists; // Return true if exists
     }
 
-    // Method to validate username and password
-    public Boolean checkUsernamePassword(String username, String password) {
-        SQLiteDatabase MyDatabase = this.getWritableDatabase();
-        Cursor cursor = MyDatabase.rawQuery("SELECT * FROM allusers WHERE username = ? AND password = ?", new String[]{username, password});
-        return cursor.getCount() > 0; // Return true if credentials are valid
-    }
-
-    // Method to insert a new note
-    public Boolean insertNote(String username, String title, String subtitle, String content) {
-        SQLiteDatabase MyDatabase = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("username", username);
-        contentValues.put("title", title);
-        contentValues.put("subtitle", subtitle);
-        contentValues.put("content", content);
-        long result = MyDatabase.insert("notes", null, contentValues);
-
-        return result != -1; // Return true if insert was successful
-    }
-
-    // Method to retrieve notes for a specific user
-    public Cursor getNotes(String username) {
-        SQLiteDatabase MyDatabase = this.getWritableDatabase();
-        return MyDatabase.rawQuery("SELECT * FROM notes WHERE username = ?", new String[]{username});
-    }
-
-    // Method to update an existing note (optional)
-    public Boolean updateNote(String username, String title, String subtitle, String content) {
-        SQLiteDatabase MyDatabase = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("title", title);
-        contentValues.put("subtitle", subtitle);
-        contentValues.put("content", content);
-        int result = MyDatabase.update("notes", contentValues, "username = ? AND title = ?", new String[]{username, title});
-
-        return result > 0; // Return true if the update was successful
+    // Method to validate user credentials
+    public boolean validateUser(String username, String password) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_USERS, new String[]{COLUMN_ID},
+                COLUMN_USERNAME + "=? AND " + COLUMN_PASSWORD + "=?",
+                new String[]{username, password}, null, null, null);
+        boolean isValid = (cursor.getCount() > 0); // Check if credentials are valid
+        cursor.close(); // Close cursor
+        db.close(); // Close database connection
+        return isValid; // Return true if valid
     }
 }
