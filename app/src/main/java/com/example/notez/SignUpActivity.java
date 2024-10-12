@@ -1,4 +1,4 @@
-package com.example.notez; // Change this to your actual package name
+package com.example.notez;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +13,7 @@ import com.example.notez.databinding.SignUpBinding;
 public class SignUpActivity extends AppCompatActivity {
 
     private TextView signInText;
-    private Button signUpButton; // Declare the Sign Up button
+    private Button signUpButton;
     SignUpBinding binding;
     DatabaseHelper databaseHelper;
 
@@ -21,14 +21,13 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = SignUpBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot()); // Ensure you create this layout
+        setContentView(binding.getRoot());
 
         databaseHelper = new DatabaseHelper(this);
 
-        signInText = findViewById(R.id.sign_up_text);
-        signUpButton = findViewById(R.id.sign_in_button); // Referencing the Sign Up button
+        signInText = findViewById(R.id.sign_in_text); // Update ID to match your XML
+        signUpButton = findViewById(R.id.sign_up_button);
 
-        // Set an OnClickListener for the Sign Up button (if you want to handle Sign Up logic)
         binding.signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -41,11 +40,9 @@ public class SignUpActivity extends AppCompatActivity {
                 } else {
                     if (password.equals(retypePassword)) {
                         Boolean checkUsername = databaseHelper.checkUsername(username);
-
-                        if (checkUsername == false) {
+                        if (!checkUsername) {
                             Boolean insert = databaseHelper.insertData(username, password);
-
-                            if (insert == true) {
+                            if (insert) {
                                 Toast.makeText(SignUpActivity.this, "Sign Up Successfully", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
                                 startActivity(intent);
@@ -62,11 +59,9 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
-        // Set an OnClickListener for the Sign In text
         binding.signInText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Start the Sign In activity
                 Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
                 startActivity(intent);
             }

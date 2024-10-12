@@ -1,4 +1,4 @@
-package com.example.notez; // Change this to your actual package name
+package com.example.notez;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +15,7 @@ public class SignInActivity extends AppCompatActivity {
     private TextView signUpText;
     SignInBinding binding;
     DatabaseHelper databaseHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,10 +36,10 @@ public class SignInActivity extends AppCompatActivity {
                     Toast.makeText(SignInActivity.this, "All fields are mandatory", Toast.LENGTH_SHORT).show();
                 } else {
                     Boolean checkCredentials = databaseHelper.checkUsernamePassword(username, password);
-
-                    if (checkCredentials == true) {
+                    if (checkCredentials) {
                         Toast.makeText(SignInActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getApplicationContext(), MainActivity2.class);
+                        Intent intent = new Intent(getApplicationContext(), main.class);
+                        intent.putExtra("USERNAME", username); // Pass the username to main
                         startActivity(intent);
                     } else {
                         Toast.makeText(SignInActivity.this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
@@ -46,11 +47,10 @@ public class SignInActivity extends AppCompatActivity {
                 }
             }
         });
-        // Set an OnClickListener for the Sign Up text
+
         binding.signUpText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Start the Sign Up activity
                 Intent intent = new Intent(SignInActivity.this, SignUpActivity.class);
                 startActivity(intent);
             }
