@@ -9,8 +9,8 @@
     tools:context=".MainActivity2">
 
     <androidx.core.widget.NestedScrollView
-        android:layout_width="393dp"
-        android:layout_height="597dp"
+        android:layout_width="413dp"
+        android:layout_height="716dp"
         android:fillViewport="true"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="108dp">
@@ -28,8 +28,8 @@
         android:id="@+id/imageView3"
         android:layout_width="73dp"
         android:layout_height="73dp"
-        tools:layout_editor_absoluteX="157dp"
-        tools:layout_editor_absoluteY="669dp"
+        tools:layout_editor_absoluteX="169dp"
+        tools:layout_editor_absoluteY="786dp"
         tools:srcCompat="@drawable/circular_background" />
 
     <ImageView
@@ -37,17 +37,7 @@
         android:layout_width="73dp"
         android:layout_height="73dp"
         app:srcCompat="@drawable/ic_add_note"
-        tools:layout_editor_absoluteX="157dp"
-        tools:layout_editor_absoluteY="669dp" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
-        android:layout_width="73dp"
-        android:layout_height="73"
-        android:clickable="true"
-        app:backgroundTint="@android:color/transparent"
-        app:srcCompat="@drawable/circular_background"
-        tools:layout_editor_absoluteX="256dp"
-        tools:layout_editor_absoluteY="713dp" />
+        tools:layout_editor_absoluteX="169dp"
+        tools:layout_editor_absoluteY="786dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
