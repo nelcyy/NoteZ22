@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -45,6 +46,7 @@ public class note_display extends AppCompatActivity {
     private ImageView cameraImageView;
     private ImageView backImageView;
     private EditText noteEditText;
+    private ImageView capturedImageView; // Declare capturedImageView
 
     private FusedLocationProviderClient fusedLocationClient;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 100;
@@ -59,6 +61,7 @@ public class note_display extends AppCompatActivity {
         cameraImageView = findViewById(R.id.imageView5); // Your camera icon ID
         backImageView = findViewById(R.id.imageView); // Your back arrow icon ID
         noteEditText = findViewById(R.id.textView5); // Your note field ID
+        capturedImageView = findViewById(R.id.capturedImageView); // Initialize capturedImageView (Make sure this ID exists in your layout)
 
         // Set up the camera click listener
         cameraImageView.setOnClickListener(v -> checkCameraPermission());
@@ -70,7 +73,6 @@ public class note_display extends AppCompatActivity {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         // Find location icon and set listener
-        locationImageView = findViewById(R.id.imageView7);  // Your location icon ID
         noteEditText = findViewById(R.id.textView5); // The EditText to display location
 
         // Set click listener for the location icon
@@ -147,6 +149,10 @@ public class note_display extends AppCompatActivity {
             if (photo != null) {
                 // Set the captured image in the ImageView
                 cameraImageView.setImageBitmap(photo);
+
+                // Make the ImageView visible
+                capturedImageView.setVisibility(View.VISIBLE);
+                capturedImageView.setImageBitmap(photo); // Set the image in the capturedImageView
 
                 // Append image information without deleting the current note
                 String existingText = noteEditText.getText().toString(); // Get current text
