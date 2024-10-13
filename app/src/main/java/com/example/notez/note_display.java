@@ -144,11 +144,13 @@ public class note_display extends AppCompatActivity {
         if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
 
-            // Display the captured image in the note (as text or in an image view)
             if (photo != null) {
-                // Assuming the note text displays the image information
-                noteEditText.setText("Image captured: " + photo.toString());
-                // Optionally, you can save the image to storage and update the note with the file path
+                // Set the captured image in the ImageView
+                cameraImageView.setImageBitmap(photo);
+
+                // Append image information without deleting the current note
+                String existingText = noteEditText.getText().toString(); // Get current text
+                noteEditText.setText("Image captured.\n" + existingText); // Add image info above existing text
             }
         }
     }
@@ -174,34 +176,29 @@ public class note_display extends AppCompatActivity {
             public void onComplete(@NonNull Task<Location> task) {
                 if (task.isSuccessful() && task.getResult() != null) {
                     Location location = task.getResult();
-                    // Get latitude and longitude
                     double latitude = location.getLatitude();
                     double longitude = location.getLongitude();
 
-                    // Get address from latitude and longitude using Geocoder
                     Geocoder geocoder = new Geocoder(note_display.this, Locale.getDefault());
                     try {
                         List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
                         if (addresses != null && !addresses.isEmpty()) {
                             Address address = addresses.get(0);
+                            String addressLine = address.getAddressLine(0);
+                            String country = address.getCountryName();
+                            String city = address.getLocality();
+                            String state = address.getAdminArea();
+                            String road = address.getThoroughfare();
 
-                            // Get detailed address information
-                            String addressLine = address.getAddressLine(0);  // Full address
-                            String country = address.getCountryName();  // Country name
-                            String city = address.getLocality();  // City name
-                            String state = address.getAdminArea();  // State/Province name
-                            String road = address.getThoroughfare();  // Road name
-
-                            // Display the detailed address in the EditText
+                            // Append detailed address information without deleting the current note
+                            String existingText = noteEditText.getText().toString(); // Get current text
                             noteEditText.setText("Address: " + addressLine + "\n" +
                                     "Country: " + country + "\n" +
                                     "City: " + city + "\n" +
                                     "State: " + state + "\n" +
-                                    "Road: " + road);
+                                    "Road: " + road + "\n" + "\n" + existingText); // Append detailed location info
                         } else {
-                            // If no address is found
-                            noteEditText.setText("Location: " + latitude + ", " + longitude + "\n" +
-                                    "Address not found.");
+                            noteEditText.append("\nLocation: " + latitude + ", " + longitude + " (Address not found)");
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -209,7 +206,6 @@ public class note_display extends AppCompatActivity {
                     }
                 } else {
                     Toast.makeText(note_display.this, "Unable to fetch location", Toast.LENGTH_SHORT).show();
-                    Log.e("LocationError", "Failed to get location.");
                 }
             }
         });
