@@ -10,14 +10,18 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity {
 
     private ImageView logoutImageView;
+    private ImageView circleImageView;
+    private ImageView plusImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main); // Replace with your actual layout
+        setContentView(R.layout.activity_main); // Make sure this matches your layout file
 
-        // Find the logout ImageView
+        // Find the views
         logoutImageView = findViewById(R.id.logout);
+        circleImageView = findViewById(R.id.circle);
+        plusImageView = findViewById(R.id.plus);
 
         // Set up the click listener for logout
         logoutImageView.setOnClickListener(new View.OnClickListener() {
@@ -26,6 +30,28 @@ public class MainActivity extends AppCompatActivity {
                 logout();
             }
         });
+
+        // Set up the click listener for the circle icon
+        circleImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openNoteDisplay();
+            }
+        });
+
+        // Set up the click listener for the plus icon
+        plusImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openNoteDisplay();
+            }
+        });
+    }
+
+    private void openNoteDisplay() {
+        // Navigate to the note_display activity
+        Intent intent = new Intent(MainActivity.this, note_display.class);
+        startActivity(intent);
     }
 
     private void logout() {
