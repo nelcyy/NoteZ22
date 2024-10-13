@@ -58,8 +58,8 @@
 
     <ImageView
         android:id="@+id/imageView7"
-        android:layout_width="56dp"
-        android:layout_height="71dp"
+        android:layout_width="57dp"
+        android:layout_height="81dp"
         android:layout_marginEnd="128dp"
         android:layout_marginBottom="9dp"
         app:layout_constraintBottom_toBottomOf="@+id/textView4"
@@ -70,8 +70,8 @@
 
     <ImageView
         android:id="@+id/imageView8"
-        android:layout_width="56dp"
-        android:layout_height="74dp"
+        android:layout_width="61dp"
+        android:layout_height="79dp"
         android:layout_marginBottom="9dp"
         app:layout_constraintBottom_toBottomOf="@+id/textView4"
         app:layout_constraintEnd_toStartOf="@+id/imageView10"
@@ -95,7 +95,7 @@
         android:layout_marginEnd="36dp"
         android:layout_marginBottom="4dp"
         android:text="Camera"
-        android:textColor="#00FF95"
+        android:textColor="#00BFB3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/imageView7" />
 
@@ -104,9 +104,9 @@
         android:layout_width="66dp"
         android:layout_height="17dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="8dp"
         android:text="Location"
-        android:textColor="#00FF95"
+        android:textColor="#00BFB3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/imageView8" />
 
@@ -117,17 +117,18 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="4dp"
         android:text="Delete"
-        android:textColor="#00FF95"
+        android:textColor="#00BFB3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/imageView10" />
 
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="52dp"
-        android:layout_height="20dp"
-        android:layout_marginEnd="24dp"
+        android:layout_width="61dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="4dp"
         android:text="Share"
-        android:textColor="#00FF95"
+        android:textColor="#00BFB3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
